@@ -5,13 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <meta name="viewport"
-        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>JAVA学习</title>
     <!--JS、CSS引入-->
     <link rel="stylesheet" type="text/css" href="assets/waifu.min.css?v=1.4.2" />
     <link rel="stylesheet" href="css/宇航员.css">
-    <link href="css/zxmk.css"/>
+    <link href="css/zxmk.css" />
     <script type="text/javascript" src="js/jquery.superslide.2.1.1.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/标题.js"></script>
@@ -26,7 +25,7 @@
             position: relative;
             left: 1342px;
         }
-
+        
         .waifu-tool span {
             display: block;
             cursor: pointer;
@@ -35,14 +34,18 @@
             transition: 0.2s;
             left: 1242px;
         }
-        .waifu-tips{
-            position: absolute; left: 1211px;
+        
+        .waifu-tips {
+            position: absolute;
+            left: 1211px;
             width: 300px;
         }
-        .index-con{
-            margin:150px 70px;
+        
+        .index-con {
+            margin: 150px 70px;
         }
-        .neirong{
+        
+        .neirong {
             width: 1394px;
             height: 1000px;
             position: relative;
@@ -50,7 +53,8 @@
             margin-left: 10px;
             border: 1px solid transparent;
         }
-        li{
+        
+        li {
             display: block;
             background-color: rgb(131, 12, 243);
             width: 280px;
@@ -63,7 +67,8 @@
             line-height: 142px;
             text-align: center;
         }
-        a{
+        
+        a {
             z-index: 999;
             color: rgb(0, 0, 0);
             cursor: pointer;
@@ -98,18 +103,18 @@
     <script src="assets/live2d.min.js?v=1.0.5"></script>
     <script type="text/javascript">
         /* 可直接修改部分参数 */
-        live2d_settings['modelId'] = 1;                  // 默认模型 ID
-        live2d_settings['modelTexturesId'] = 87;         // 默认材质 ID
-        live2d_settings['modelStorage'] = true;         // 不储存模型 ID
-        live2d_settings['canCloseLive2d'] = true;       // 隐藏 关闭看板娘 按钮
-        live2d_settings['canTurnToHomePage'] = true;    // 隐藏 返回首页 按钮
-        live2d_settings['waifuSize'] = '600x535';        // 看板娘大小
-        live2d_settings['waifuTipsSize'] = '570x150';    // 提示框大小
-        live2d_settings['waifuFontSize'] = '30px';       // 提示框字体
-        live2d_settings['waifuToolFont'] = '36px';       // 工具栏字体
-        live2d_settings['waifuToolLine'] = '50px';       // 工具栏行高
-        live2d_settings['waifuToolTop'] = '-60px';       // 工具栏顶部边距
-        live2d_settings['waifuDraggable'] = 'axis-x';    // 拖拽样式
+        live2d_settings['modelId'] = 1; // 默认模型 ID
+        live2d_settings['modelTexturesId'] = 87; // 默认材质 ID
+        live2d_settings['modelStorage'] = true; // 不储存模型 ID
+        live2d_settings['canCloseLive2d'] = true; // 隐藏 关闭看板娘 按钮
+        live2d_settings['canTurnToHomePage'] = true; // 隐藏 返回首页 按钮
+        live2d_settings['waifuSize'] = '600x535'; // 看板娘大小
+        live2d_settings['waifuTipsSize'] = '570x150'; // 提示框大小
+        live2d_settings['waifuFontSize'] = '30px'; // 提示框字体
+        live2d_settings['waifuToolFont'] = '36px'; // 工具栏字体
+        live2d_settings['waifuToolLine'] = '50px'; // 工具栏行高
+        live2d_settings['waifuToolTop'] = '-60px'; // 工具栏顶部边距
+        live2d_settings['waifuDraggable'] = 'axis-x'; // 拖拽样式
         /* 在 initModel 前添加 */
         initModel("assets/waifu-tips.json?v=1.4.2")
     </script>
@@ -151,7 +156,7 @@
     <script type="text/javascript" src='js/shape.js'></script>
     <script type="text/javascript" src="js/script.js"></script>
 
-    
+
     <ul class="neirong">
         <li><a href="./HTML/MySQL/MySQL.html">MySQL</a></li>
         <li><a href="./HTML/HTML+CSS+Jquery.pdf">前端四件套</a></li>
@@ -161,9 +166,9 @@
         <li><a href="./HTML/SpringMVC.pdf">SpringMVC</a></li>
         <li><a href="./HTML/MyBatis.pdf">MyBatis</a></li>
         <li><a href="./HTML/SpringBoot2.pdf">SpringBoot2</a></li>
-        <li><a href="./HTML/Git.pdf">Git</a></li>
-        <li><a href="./HTML/Docker.pdf">Docker</a></li>
-        <li><a href="./HTML/Redis.pdf">Reis6</a></li>
+        <li><a href="./HTML/Git/Git.html">Git</a></li>
+        <li><a href="./HTML/Dokcer/Docker.html">Docker</a></li>
+        <li><a href="./HTML/Redis/Redis6.html">Reis6</a></li>
         <li><a href="./HTML/Nginx/Nginx.html">Nginx</a></li>
         <li><a href="./HTML/RabbitMQ/RabbitMQ.html">RabbitMQ</a></li>
     </ul>
@@ -171,10 +176,10 @@
 
 
 
-    
+
     <script>
-        seajs.use('jquery',function($) {
-            $(function () {
+        seajs.use('jquery', function($) {
+            $(function() {
                 $(".index-con .in-kct").hover(function() {
                     $(this).find('i:first').addClass('smaller').removeClass('bigger')
                     $(this).find('span:first').fadeOut('')
