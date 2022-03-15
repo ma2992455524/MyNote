@@ -25,11 +25,11 @@
             position: relative;
             left: 1342px;
         }
-        
+
         .waifu {
             left: -289px;
         }
-        
+
         .waifu-tool span {
             display: block;
             cursor: pointer;
@@ -38,17 +38,17 @@
             transition: 0.2s;
             left: 1242px;
         }
-        
+
         .waifu-tips {
             position: absolute;
             left: 1211px;
             width: 300px;
         }
-        
+
         .index-con {
             margin: 150px 70px;
         }
-        
+
         .neirong {
             width: 100%;
             height: 1000px;
@@ -57,7 +57,7 @@
             margin-left: 10px;
             border: 1px solid transparent;
         }
-        
+
         li {
             display: block;
             background-color: rgb(131, 12, 243);
@@ -71,7 +71,7 @@
             line-height: 142px;
             text-align: center;
         }
-        
+
         a {
             z-index: 999;
             color: rgb(0, 0, 0);
@@ -179,27 +179,47 @@
     </ul>
 
     <script>
-        seajs.use('jquery', function($) {
-            $(function() {
-                $(".index-con .in-kct").hover(function() {
+        // 放大缩小刷新页面
+        var normalWidth = window.innerWidth;
+        var normalHeight = window.innerHeight;
+        var html = document.documentElement
+        var body = document.body
+        if (window.innerHeight < 700) {
+            html.style.overflowY = 'scroll'
+            body.style.overflowY = 'scroll'
+        }
+        window.onresize = function () {
+            if (normalWidth > window.innerWidth) {
+
+                html.style.overflowY = 'scroll'
+                body.style.overflowY = 'scroll'
+            }
+            if (normalWidth <= window.innerWidth) {
+                html.style.overflowY = 'hidden'
+                body.style.overflowY = 'hidden'
+            }
+        }
+        seajs.use('jquery', function ($) {
+            $(function () {
+                $(".index-con .in-kct").hover(function () {
                     $(this).find('i:first').addClass('smaller').removeClass('bigger')
                     $(this).find('span:first').fadeOut('')
                     $(this).find('.in-text').show('fast').addClass('show')
                     $(this).find('.ch').removeClass('')
-                }, function() {
+                }, function () {
                     $(this).find('i:first').removeClass('smaller').addClass('bigger')
                     $(this).find('span:first').fadeIn('')
                     $(this).find('.in-text').hide('').removeClass('fast')
                     $(this).find('.ch').addClass('show')
                 })
-                $(".index-con .in-jbk").hover(function() {
+                $(".index-con .in-jbk").hover(function () {
                     $(this).find('i:first').addClass('hide')
                     $(this).find('span:first').hide('')
                     $(this).find('.in-text').show('').addClass('show')
                     var num = $(this).index('.in-jbk') + 1;
                     $(this).find('.in-none').show('').addClass('toLeft' + num).removeClass('toRight' + num)
                     $(this).find('.ch1').removeClass('show')
-                }, function() {
+                }, function () {
                     $(this).find('i:first').addClass('hide')
                     $(this).find('span:first').fadeIn('')
                     $(this).find('.in-text').hide('').removeClass('show')
@@ -207,14 +227,14 @@
                     $(this).find('.in-none').show().addClass('toRight' + num).removeClass('toLeft' + num)
                     $(this).find('.ch1').addClass('show')
                 })
-                $(".index-con .in-zxl").hover(function() {
+                $(".index-con .in-zxl").hover(function () {
                     $(this).find('i:first').addClass('hide')
                     $(this).find('span:first').hide('')
                     $(this).find('.in-text').show().addClass('show')
                     var nums = $(this).index('.in-zxl') + 1;
                     $(this).find('.in-none').show().addClass('toLeft4').removeClass('toRight4')
                     $(this).find('.ch2').removeClass('show')
-                }, function() {
+                }, function () {
                     $(this).find('i:first').addClass('hide')
                     $(this).find('span:first').fadeIn('fast')
                     $(this).find('.in-text').hide().removeClass('show')

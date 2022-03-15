@@ -25,7 +25,8 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   overflow: hidden;
-  height: 100%;
+  /* height: 100%; */
+  height: 100vh;
 }
 
 body {
@@ -35,10 +36,18 @@ body {
   line-height: 1;
   cursor: default;
   overflow: hidden;
-  height: 100%;
+  /* height: 100%; */
+  height: 100vh;
   font-size: 5rem;
 }
-
+@media all and(max-height: 700px){
+  body {
+    overflow: scroll !important;
+  }
+  html {
+    overflow: scroll !important; 
+  }
+}
 .icon {
   display: inline-block;
   font-size: inherit;
