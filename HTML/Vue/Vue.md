@@ -1,4 +1,4 @@
-# Vue
+# Vue2
 
 ## 一、初识Vue
 
@@ -3374,47 +3374,556 @@ Vue中使用组件的三大步骤：
 </html>
 ```
 
-# 更新至56集
+## 十八、脚手架
 
+### (一)、说明
 
+1、Vue脚手架是Vue官方提供的标准化开发工具（开发平台）
 
+2、最新的版本是4.x
 
+**3、[文档](https://link.juejin.cn/?target=https%3A%2F%2Fcli.vuejs.org%2Fzh%2F)**
 
+### (二)、具体步骤
 
+第一步（仅第一次执行）：全局安装@vue/cli。
 
+```
+npm install -g @vue/cli
+```
 
+第二步：切换到你要创建项目的目录，然后使用命令创建项目
 
+![image-20220708142410913](Vue.assets/image-20220708142410913.png)
 
+第三步：启动项目
 
+```
+npm run serve
+```
 
+### (三)、脚手架文件结构
 
+#### 1、文件结构
 
+```s
+├── node_modules:各种包,库,插件
+├── public
+│   ├── favicon.ico: 页签图标
+│   └── index.html: 主页面
+├── src
+│   ├── assets: 存放静态资源
+│   │   └── logo.png
+│   │── component: 存放组件
+│   │   └── HelloWorld.vue
+│   │── App.vue: 汇总所有组件
+│   │── main.js: 入口文件
+├── .gitignore: git版本管制忽略的配置
+├── babel.config.js: babel的配置文件
+├── package.json: 应用包配置文件 
+├── README.md: 应用描述文件
+├── package-lock.json：包版本控制文件
+```
 
+#### 2、文件
 
+首先进入main.js  main找App.vue
 
+![image-20220708142909164](Vue.assets/image-20220708142909164.png)
 
+app.vue找helloworld组件注册并使用
 
+![image-20220708143006013](Vue.assets/image-20220708143006013.png)
 
+#### 3、vue.config.js配置文件
 
+1. 使用vue inspect > output.js可以查看到Vue脚手架的默认配置，但无法更改。文件标红最外面加上const a ={}，在output.js文件中
+2. 在根目录建立vue.config.js文件可以对脚手架进行个性化定制，详情见：[VueCLI配置参考](https://link.juejin.cn/?target=https%3A%2F%2Fcli.vuejs.org%2Fzh%2Fconfig%2F%23%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE)
 
+### (四)、函数
 
+#### 1、render函数(使用完整vue)
 
+![image-20220708163210427](Vue.assets/image-20220708163210427.png)
 
+如果不写rander函数，默认不是加载的完整的vue，而是运行时vue组件
 
+运行时vue是vue被阉割的版本没有模板加载器
 
+所以要使用render函数加载完整vue才能使用模板加载器
 
+#### 2、ref属性(获取doment元素)
 
+获取doment元素
 
+```vue
+<template>
+	<div>
+		<h1 v-text="msg" ref="title"></h1>
+	</div>
+</template>
 
+<script>
+	//引入School组件
+	import School from './components/School'
 
+	export default {
+		name:'App',
+		components:{School},
+		data() {
+			return {
+				msg:'欢迎学习Vue！'
+			}
+		},
+		methods: {
+			showDOM(){
+				console.log(this.$refs.title) // 获取h1元素
+			}
+		},
+	}
+</script>
+```
 
+#### 3、props配置项
 
+1. 功能：让组件接收外部传过来的数据
 
+2. 子模版发送数据<h1 name="xxx"> aaa</h1>
 
+3. 父模块接受数据
 
+   - 第一种方式（只接收）：`props:['name']`
 
+   - 第二种方式（限制类型）：`props:{name:String}`
 
+   - 第三种方式（限制类型、限制必要性、指定默认值）：
 
+```json
+props:{
+	name:{
+	type:String, //类型
+	required:true, //必要性
+	default:'老王' //默认值
+	}
+}
+```
 
+> 备注：props是只读的，Vue底层会监测你对props的修改，如果进行了修改，就会发出警告，若业务需求确实需要修改，那么请复制props的内容到data中一份，然后去修改data中的数据。
 
+> props中接收的数据会被绑定到组件实例对象vc上，且优先级高于data中的数据，data中的数据属性名字不能与接收的props属性名一致
+
+​	4.实例
+
+**App.vue:**
+
+```vue
+<template>
+  <div>
+    <!--传入父模板  name=李四 sex=女 age数据绑定这样就不是以字符串发送=18-->
+    <Student name="李四" sex="女" :age="18" />
+  </div>
+</template>
+<script>
+import Student from "./components/Student";
+export default {
+  name: "App",
+  components: { Student },
+};
+</script>
+```
+
+**Student.vue**
+
+```vue
+<template>
+  <div>
+    <h1>{{ msg }}</h1>
+    <h2>学生姓名：{{ name }}</h2>
+    <h2>学生性别：{{ sex }}</h2>
+    <h2>学生年龄：{{ myAge + 1 }}</h2>
+    <button @click="updateAge">尝试修改收到的年龄</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Student",
+  data() {
+    console.log(this);
+    return {
+      msg: "我是一个尚硅谷的学生",
+      myAge: this.age,	// 绑定date的值这样该就是自己date的值
+    };
+  },
+  methods: {
+    updateAge() {
+      this.myAge++;
+    },
+  },
+  //方法一:简单声明接收，放在组件实例对象vc上
+  // props:['name','age','sex']
+
+  //方法二:接收的同时对数据进行类型限制，类型如果不符合报错
+  /* props:{
+			name:String,
+			age:Number,
+			sex:String
+		} */
+
+  //方法三：接收的同时对数据：进行类型限制+默认值的指定+必要性的限制
+  props: {
+    name: {
+      type: String, //name的类型是字符串
+      required: true, //name是必要的，有此属性一般不需要加默认值
+    },
+    age: {
+      type: Number,
+      default: 99, //默认值，即如果不传此属性则使用默认值
+    },
+    sex: {
+      type: String,
+      required: true,
+    },
+  },
+};
+</script>
+```
+
+#### 4、minxin(提取公共方法)
+
+1. 功能：可以把多个组件共用的配置提取成一个混入对象
+2. 使用方式：
+
+第一步定义混合
+
+```
+{
+    data(){....},
+    methods:{....}
+    ....
+}
+```
+
+第二步使用混入：
+
+```
+-   使用前需要import导入
+-   全局混入：Vue.mixin(xxx)放在main.js文件中,所有vm,vc都能得到混入的属性
+-   局部混入：mixins:['xxx']放在需要的文件中,在此文件中得到混入的属性（原属性+混入属性）
+-   替换型策略有`props`、`methods`、`inject`、`computed`，就是将新的同名参数替代旧的参数
+-   合并型策略是`data`, 通过`set`方法进行合并和重新赋值， 如果混入与自身（vc）有同名属性,自身属性优先级高,会覆盖掉混入属性
+-   队列型策略有生命周期函数和`watch`，原理是将函数存入一个数组，然后正序遍历依次执行，自身（vc）的钩子在混合之后运行
+-   叠加型有`component`、`directives`、`filters`，通过原型链进行层层的叠加
+-   如果前后两个混合有同名属性，以后面的为主
+```
+
+![image-20220709092725913](Vue.assets/image-20220709092725913.png)
+
+- **school.vue**
+
+```vue
+<template>
+  <div>
+    <h2 @click="showName">学校名称：{{ name }}</h2>
+    <h2>学校地址：{{ address }}</h2>
+  </div>
+</template>
+
+<script>
+//引入一个hunhe
+// import {hunhe,hunhe2} from '../mixin'
+
+export default {
+  name: "School",
+  data() {
+    return {
+      name: "尚硅谷",
+      address: "北京",
+      x: 666,
+      // 如果混入与自身有同名属性。自身属性优先级高
+    };
+  },
+  // mixins:[hunhe,hunhe2],
+};
+</script>
+```
+
+- **Student.vue**
+
+```vue
+<template>
+  <div>
+    <h2 @click="showName">学生姓名：{{ name }}</h2>
+    <h2>学生性别：{{ sex }}</h2>
+  </div>
+</template>
+
+<script>
+//局部混合：
+// import {hunhe,hunhe2} from '../mixin'
+
+export default {
+  name: "Student",
+  data() {
+    return {
+      name: "张三",
+      sex: "男",
+    };
+  },
+  // mixins:[hunhe,hunhe2]
+};
+</script>
+```
+
+- **App.vue**
+
+```vue
+<template>
+	<div>
+		<School/>
+		<hr>
+		<Student/>
+	</div>
+</template>
+<script>
+	import School from './components/School'
+	import Student from './components/Student'
+
+	export default {
+		name:'App',
+		components:{School,Student}
+	}
+</script>
+```
+
+- **main.js**
+
+```javascript
+//引入Vue
+import Vue from 'vue'
+//引入App
+import App from './App.vue'
+
+//关闭Vue的生产提示
+Vue.config.productionTip = false
+
+// 全局混合，给所有的vm和vc得到混合
+import { hunhe, hunhe2 } from './mixin'
+Vue.mixin(hunhe)
+Vue.mixin(hunhe2)
+
+//创建vm
+new Vue({
+	el: '#app',
+	render: h => h(App)
+})
+```
+
+- **mixin.js**
+
+```javascript
+export const hunhe = {
+	methods: {
+		showName(){
+			alert(this.name)
+		}
+	},
+	mounted() {
+		console.log('你好啊！')
+	},
+}
+export const hunhe2 = {
+	data() {
+		return {
+			x:100,
+			y:200
+		}
+	},
+}
+```
+
+#### 5、插件
+
+1. 功能：用于增强Vue
+2. 本质：包含install方法的一个对象，install的第一个参数是Vue，第二个以后的参数是插件使用者传递的数据。
+3. 定义插件：
+
+```javascript
+对象.install = function (Vue, options) {
+    // 1. 添加全局过滤器
+    Vue.filter(....)
+
+    // 2. 添加全局指令
+    Vue.directive(....)
+
+    // 3. 配置全局混入(合)
+    Vue.mixin(....)
+
+    // 4. 添加实例方法
+    Vue.prototype.$myMethod = function () {...}
+    Vue.prototype.$myProperty = xxxx
+}
+```
+
+​     4.使用插件：`Vue.use()`
+
+![image-20220709093434888](Vue.assets/image-20220709093434888.png)
+
+- **plugins.js**
+
+  ```javascript
+  export default {
+  	install(Vue, x, y, z) {
+  		// 接收参数
+  		console.log(x, y, z)
+  		//全局过滤器，从第一位开始，找到前四个
+  		Vue.filter('mySlice', function (value) {
+  			return value.slice(0, 4)
+  		})
+  
+  		//定义全局指令,自动获取焦点
+  		Vue.directive('fbind', {
+  			//指令与元素成功绑定时（一上来）
+  			bind(element, binding) {
+  				element.value = binding.value
+  			},
+  			//指令所在元素被插入页面时
+  			inserted(element, binding) {
+  				element.focus()
+  			},
+  			//指令所在的模板被重新解析时
+  			update(element, binding) {
+  				element.value = binding.value
+  			}
+  		})
+  
+  		//定义混入
+  		Vue.mixin({
+  			data() {
+  				return {
+  					x: 100,
+  					y: 200
+  				}
+  			},
+  		})
+  
+  		//给Vue原型上添加一个方法（vm和vc就都能用了）
+  		Vue.prototype.hello = () => { alert('你好啊') }
+  	}
+  }
+  ```
+
+- **main.js**
+
+  ```javascript
+  //引入Vue
+  import Vue from 'vue'
+  //引入App
+  import App from './App.vue'
+  //关闭Vue的生产提示
+  Vue.config.productionTip = false
+  
+  //引入插件
+  import plugins from './plugins'
+  //应用（使用）插件
+  Vue.use(plugins, 1, 2, 3)
+  // 传入参数
+  
+  //创建vm
+  new Vue({
+  	el: '#app',
+  	render: h => h(App)
+  })
+  ```
+
+- **School.vue**
+
+  ```vue
+  <template>
+  	<div>
+  		<h2>学校名称：{{name | mySlice}}</h2>
+  		<h2>学校地址：{{address}}</h2>
+  		<button @click="test">点我测试一个hello方法</button>
+  	</div>
+  </template>
+  
+  <script>
+  	export default {
+  		name:'School',
+  		data() {
+  			return {
+  				name:'尚硅谷atguigu',
+  				address:'北京',
+  			}
+  		},
+  		methods: {
+  			test(){
+  				this.hello()
+  			}
+  		},
+  	}
+  </script>
+  ```
+
+- **Student.vue**
+
+  ```vue
+  <template>
+  	<div>
+  		<h2>学生姓名：{{name}}</h2>
+  		<h2>学生性别：{{sex}}</h2>
+  		<input type="text" v-fbind:value="name">
+  	</div>
+  </template>
+  
+  <script>
+  	export default {
+  		name:'Student',
+  		data() {
+  			return {
+  				name:'张三',
+  				sex:'男'
+  			}
+  		},
+  	}
+  </script>
+  ```
+
+- **App.vue**
+
+  ```vue
+  <template>
+  	<div>
+  		<School/>
+  		<hr>
+  		<Student/>
+  	</div>
+  </template>
+  
+  <script>
+  	import School from './components/School'
+  	import Student from './components/Student'
+  
+  	export default {
+  		name:'App',
+  		components:{School,Student}
+  	}
+  </script>
+  ```
+
+#### 6、scoped样式
+
+如果不同组件起了相同的样式名，会造成样式冲突，在App.vue中后import导入的组件样式会覆盖前面一个组件的同名样式，所以用scoped解决。最好不要再App.vue的style中加入scoped，因为他是汇总组件，写在其中的样式为公共样式。
+
+1. 作用：让样式在局部生效，防止冲突。
+2. 写法：
+
+```html
+<style lang="less" scoped> 
+//lang =''规定了用什么来写style，不写默认为css
+	.demo{
+		background-color: pink;
+	}
+</style>
+```
 

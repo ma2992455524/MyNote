@@ -2331,3 +2331,249 @@ CREATE PROCEDURE myq7(IN cheng INT)
  END $
 CALL myq7(20)$ 
 ```
+
+## 二十三、linux安装
+
+### 1、Mysql的4大版本
+
+MySQL Community Server 社区版本，开源免费，自由下载，但不提供官方技术支持，适用于 大多数普通用户。 
+
+MySQL Enterprise Edition 企业版本，需付费，不能在线下载，可以试用30天。提供了更多的 功能和更完备的技术支持，更适合于对数据库的功能和可靠性要求较高的企业客户。 
+
+MySQL Cluster 集群版，开源免费。用于架设集群服务器，可将几个MySQL Server封装成一个 Server。需要在社区版或企业版的基础上使用。 
+
+MySQL Cluster CGE 高级集群版，需付费。
+
+- 截止目前，官方最新版本为 8.0.27 。此前，8.0.0 在 2016.9.12日就发布了。 
+
+- 本课程中主要使用 8.0.25版本 。同时为了更好的说明MySQL8.0新特性，还会安装 MySQL5.7 版 本，作为对比。 
+
+此外，官方还提供了 MySQL Workbench （GUITOOL）一款专为MySQL设计的 ER/数据库建模工具 。它是 著名的数据库设计工具DBDesigner4的继任者。MySQLWorkbench又分为两个版本，分别是 社区版 （MySQL Workbench OSS）、 商用版 （MySQL WorkbenchSE）。
+
+### 2、下载MySQL指定版本
+
+下载地址 官网：https://www.mysql.com
+
+打开官网，点击DOWNLOADS
+
+然后，点击 MySQL Community(GPL) Downloads
+
+![image-20220624171244029](MySQL.assets/image-20220624171244029.png)
+
+点击 MySQL Community Server
+
+![image-20220624171311888](MySQL.assets/image-20220624171311888.png)
+
+在General Availability(GA) Releases中选择适合的版本
+
+![image-20220624171322367](MySQL.assets/image-20220624171322367-16560620028831.png)
+
+- Windows下的MySQL安装有两种安装程序
+  - mysql-installer-web-community-8.0.25.0.msi 下载程序大小：2.4M；安装时需要联网安 装组件。 
+  - mysql-installer-community-8.0.25.0.msi 下载程序大小：435.7M；安装时离线安装即 可。推荐。
+
+- 这里不能直接选择CentOS 7系统的版本，所以选择与之对应的 Red Hat Enterprise Linux 
+
+- https://downloads.mysql.com/archives/community/ 直接点Download下载RPM Bundle全量 包。包括了所有下面的组件。不需要一个一个下载了。
+
+![image-20220624171502093](MySQL.assets/image-20220624171502093-16560621026473.png)
+
+下载的tar包，用压缩工具打开
+
+![image-20220624171513877](MySQL.assets/image-20220624171513877.png)
+
+解压后rpm安装包 （红框为抽取出来的安装包)
+
+![image-20220624171536842](MySQL.assets/image-20220624171536842-16560621373475.png)
+
+### 3、CentOS7下检查MySQL依赖
+
+检查/tmp临时目录权限（必不可少）
+
+由于mysql安装过程中，会通过mysql用户在/tmp目录下新建tmp_db文件，所以请给/tmp较大的权限。
+
+```
+chmod -R 777 /tmp
+```
+
+![image-20220624171718648](MySQL.assets/image-20220624171718648.png)
+
+### 4、CentOS7下MySQL安装过程
+
+将安装程序拷贝到/opt目录下
+
+在mysql的安装文件目录下执行：（必须按照顺序执行）
+
+```shell
+rpm -ivh mysql-community-common-8.0.25-1.el7.x86_64.rpm 
+rpm -ivh mysql-community-client-plugins-8.0.25-1.el7.x86_64.rpm 
+rpm -ivh mysql-community-libs-8.0.25-1.el7.x86_64.rpm 
+rpm -ivh mysql-community-client-8.0.25-1.el7.x86_64.rpm 
+rpm -ivh mysql-community-server-8.0.25-1.el7.x86_64.rpm
+```
+
+注意: 如在检查工作时，没有检查mysql依赖环境在安装mysql-community-server会报错 
+
+rpm 是Redhat Package Manage缩写，通过RPM的管理，用户可以把源代码包装成以rpm为扩展名的 文件形式，易于安装。
+
+-i , --install 安装软件包 
+
+-v , --verbose 提供更多的详细信息输出 
+
+-h , --hash 软件包安装的时候列出哈希标记 (和 -v 一起使用效果更好)，展示进度条
+
+![image-20220624172045916](MySQL.assets/image-20220624172045916.png)
+
+安装过程截图
+
+![image-20220624172101491](MySQL.assets/image-20220624172101491.png)
+
+安装过程中可能的报错信息：
+
+![image-20220624172115125](MySQL.assets/image-20220624172115125.png)
+
+一个命令：yum remove mysql-libs 解决，清除之前安装过的依赖即可
+
+```
+测试
+mysql --version 
+或
+mysqladmin --version
+```
+
+### 5、服务的初始化
+
+为了保证数据库目录与文件的所有者为 mysql 登录用户，如果你是以 root 身份运行 mysql 服务，需要执 行下面的命令初始化：
+
+mysqld --initialize --user=mysql
+
+说明： --initialize 选项默认以“安全”模式来初始化，则会为 root 用户生成一个密码并将 该密码标记为过 期 ，登录后你需要设置一个新的密码。生成的 临时密码 会往日志中记录一份。
+
+查看密码：
+
+```
+cat /var/log/mysqld.log
+```
+
+![image-20220624172257421](MySQL.assets/image-20220624172257421.png)
+
+root@localhost: 后面就是初始化的密码
+
+### 6、启动数据库
+
+```shell
+#加不加.service后缀都可以 
+启动：systemctl start mysqld.service 
+关闭：systemctl stop mysqld.service 
+重启：systemctl restart mysqld.service 
+查看状态：systemctl status mysqld.service
+自启动：systemctl enable mysqld
+```
+
+### 7、mysql登录
+
+通过 mysql -hlocalhost -P3306 -uroot -p 进行登录，在Enter password：录入初始化密码
+
+修改密码
+
+```mysql
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password'；
+```
+
+```mysql
+# 允许远程连接
+update user set host = '%' where user ='root';
+```
+
+```mysql
+# 重新加载
+flush privileges;
+```
+
+配置新连接报错：错误号码 2058，分析是 mysql 密码加密方法变了。 解决方法：Linux下 mysql -u root -p 登录你的 mysql 数据库，然后 执行这条SQL：
+
+### 8、修改字符集
+
+```
+vim /etc/my.cnf
+character_set_server=utf8
+systemctl restart mysqld
+```
+
+## 二十四、各级别的字符集
+
+### 1、比较规则
+
+MySQL有4个级别的字符集和比较规则，分别是： 
+
+- 服务器级别 
+- 数据库级别 
+- 表级别 
+- 列级别
+
+执行如下SQL语句：
+
+```
+show variables like 'character%';
+```
+
+![image-20220624173110141](MySQL.assets/image-20220624173110141.png)
+
+character_set_server：服务器级别的字符集 character_set_database：当前数据库的字符集 character_set_client：服务器解码请求时使用的字符集 character_set_connection：服务器处理请求时会把请求字符串从character_set_client转为 character_set_connection character_set_results：服务器向客户端返回数据时使用的字符集
+
+### 2、服务器级别
+
+- character_set_server ：服务器级别的字符集。 
+
+我们可以在启动服务器程序时通过启动选项或者在服务器程序运行过程中使用 SET 语句修改这两个变量 的值。比如我们可以在配置文件中这样写： 
+
+```shell
+[server] 
+character_set_server=gbk # 默认字符集 collation_server=gbk_chinese_ci #对应的默认的比较规则
+```
+
+当服务器启动的时候读取这个配置文件后这两个系统变量的值便修改了。 
+
+### 3、数据库级别 
+
+character_set_database ：当前数据库的字符集 
+
+我们在创建和修改数据库的时候可以指定该数据库的字符集和比较规则，具体语法如下： 
+
+```mysql
+CREATE DATABASE 数据库名
+    [[DEFAULT] CHARACTER SET 字符集名称]
+    [[DEFAULT] COLLATE 比较规则名称];
+ALTER DATABASE 数据库名
+    [[DEFAULT] CHARACTER SET 字符集名称]
+    [[DEFAULT] COLLATE 比较规则名称];
+```
+
+### 4、表级别 
+
+我们也可以在创建和修改表的时候指定表的字符集和比较规则，语法如下： 
+
+```mysql
+[server] 
+character_set_server=gbk # 默认字符集 collation_server=gbk_chinese_ci #对应的默认的比较规则
+```
+
+如果创建和修改表的语句中没有指明字符集和比较规则，将使用该表所在数据库的字符集和比较规则作 为该表的字符集和比较规则。
+
+### 5、列级别
+
+对于存储字符串的列，同一个表中的不同的列也可以有不同的字符集和比较规则。我们在创建和修改列 定义的时候可以指定该列的字符集和比较规则，语法如下：
+
+```mysql
+CREATE TABLE 表名(
+列名 字符串类型 [CHARACTER SET 字符集名称] [COLLATE 比较规则名称],
+其他列...
+);
+ALTER TABLE 表名 MODIFY 列名 字符串类型 [CHARACTER SET 字符集名称] [COLLATE 比较规则名称];
+```
+
+对于某个列来说，如果在创建和修改的语句中没有指明字符集和比较规则，将使用该列所在表的字符集 和比较规则作为该列的字符集和比较规则。
+
+提示 
+
+在转换列的字符集时需要注意，如果转换前列中存储的数据不能用转换后的字符集进行表示会发生 错误。比方说原先列使用的字符集是utf8，列中存储了一些汉字，现在把列的字符集转换为ascii的 话就会出错，因为ascii字符集并不能表示汉字字符。
